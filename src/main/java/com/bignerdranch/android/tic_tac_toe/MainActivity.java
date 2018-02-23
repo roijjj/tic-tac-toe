@@ -45,11 +45,30 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 
     }*/
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.tic_tac_toe_menu, menu);
+    return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        reset();
+        return super.onOptionsItemSelected(item);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         playerturn = findViewById(R.id.player_turn);
+        playerturn.setText("it is"+p1+"turn");
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 String bid = "button_"+ i+j;
@@ -151,15 +170,28 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 
         round = 0;
         p1turn = true;
+        playerturn.setText("it is"+p1+"turn");
+
     }
 
-    @Override    public void onSaveInstanceState(Bundle outState) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt("roundCount", round);
-        outState.putBoolean("player1Turn", p1turn);
-        outState.putString("player1",p1);
-        outState.putString("player2",p2);
+        outState.putInt("round", round);
+        outState.putBoolean("p1Turn", p1turn);
+        outState.putString("p1",p1);
+        outState.putString("p2",p2);
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle SaveInstanceState){
+        super.onRestoreInstanceState(SaveInstanceState);
+        round = SaveInstanceState.getInt("round");
+        p1turn = SaveInstanceState.getBoolean("p1turn");
+        p1 = SaveInstanceState.getString("p1");
+        p2 = SaveInstanceState.getString("p2");
 
     }
 
