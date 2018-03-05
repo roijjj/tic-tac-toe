@@ -1,13 +1,17 @@
 package com.bignerdranch.android.tic_tac_toe;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button[][] mButtons = new Button[3][3];
 
-    TextView  playerturn; //= findViewById(R.id.player_turn);
+    TextView  playerturn;
 
 
     boolean p1turn = true;
@@ -50,15 +54,31 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
     public boolean onCreateOptionsMenu(Menu menu){
 
         getMenuInflater().inflate(R.menu.tic_tac_toe_menu, menu);
+
     return super.onCreateOptionsMenu(menu);
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        /*if (item.getItemId() == R.id.editp1){
+            reset();
 
+        }*/
+switch (item.getItemId()){
+    case R.id.reset_subtitle:
         reset();
-        return super.onOptionsItemSelected(item);
+        return true;
+    case R.id.name_change:
+        showInputDialog();
+
+        return true;
+default:
+    return super.onOptionsItemSelected(item);
+}
+
+
+
     }
 
 
@@ -67,7 +87,7 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         playerturn = findViewById(R.id.player_turn);
-        playerturn.setText("it is"+p1+"turn");
+        changeturnview();
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -89,12 +109,12 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         }
         if (p1turn){
             ((Button)v).setText("X");
-           playerturn.setText("it is"+p2+"turn");
+
 
         }
         else if(!p1turn){
             ((Button)v).setText("O");
-            playerturn.setText("it is"+p1+"turn");
+
 
         }
 
@@ -106,13 +126,14 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
                 win(p2);
             }
         }
-        else if (round == 9){
+        else if (round == 8){
             draw();
         }
         else {
             p1turn = !p1turn;
         }
         round++;
+        changeturnview();
     }
     boolean check(){
 
@@ -151,7 +172,7 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
     }
     void win(String name)
     {
-        Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, name+" has won", Toast.LENGTH_SHORT).show();
         reset();
 
     }
@@ -170,7 +191,7 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 
         round = 0;
         p1turn = true;
-        playerturn.setText("it is"+p1+"turn");
+        changeturnview();
 
     }
 
@@ -193,6 +214,55 @@ public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         p1 = SaveInstanceState.getString("p1");
         p2 = SaveInstanceState.getString("p2");
 
+    }
+    protected void showInputDialog() {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.name_diolog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText editText1 = (EditText) promptView.findViewById(R.id.editp1);
+        final EditText editText2 = (EditText) promptView.findViewById(R.id.editp2);
+
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (!editText1.getText().toString().equals("")){
+                            p1= editText1.getText().toString();
+
+                        }
+                        if (!editText2.getText().toString().equals("")){
+
+                            p2 = editText2.getText().toString();
+
+                        }
+                    }
+
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+        changeturnview();
+    }
+    public void changeturnview(){
+        if(p1turn){
+
+            playerturn.setText("it is "+p1+"'s turn");
+        }
+        else {
+
+            playerturn.setText("it is "+p2+"'s turn");
+        }
     }
 
 }
