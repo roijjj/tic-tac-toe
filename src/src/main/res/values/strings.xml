@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">tic_tac_toe</string>
+    <string name="reset">reset</string>
+    <string name="change_players_name">change player name</string>\
+    <string name="player_1">player 1</string>
+    <string name="player_2">player 2</string>
+</resources>

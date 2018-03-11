@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/reset_subtitle"
+        android:title="@string/reset"
+        />
+    <item
+        android:id="@+id/name_change"
+        android:title="@string/change_players_name"
+        />
+</menu>
