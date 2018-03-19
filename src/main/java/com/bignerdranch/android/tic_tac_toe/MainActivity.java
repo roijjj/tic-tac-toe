@@ -1,6 +1,7 @@
 package com.bignerdranch.android.tic_tac_toe;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
    //thie textview tells you whos turnit s
     TextView  playerturn;
 
-
+//public final static String Player="tic.tac.toe";
+    final int Player = 1;
     boolean p1turn = true;
 
     //the player
@@ -49,7 +51,10 @@ switch (item.getItemId()){
         reset();//reset the board
         return true;
     case R.id.name_change:
-        showInputDialog();//chand the name of the players
+        //Intent i = new Intent(this,nameSettingsActivity.class);
+//startActivity(i);
+
+        showInputDialog();//change the name of the players
 
         return true;
 default:
@@ -97,6 +102,8 @@ default:
             ((Button)v).setText("O");
         }
 
+        round++;//adds 1 to the round
+
 
 //checks if a player has won
         if (check()){
@@ -113,7 +120,6 @@ default:
         else {
             p1turn = !p1turn;
         }
-        round++;//adds 1 to the round
         changeturnview();//changes the textview
     }
     /*
@@ -217,6 +223,16 @@ reset the board
     protected void showInputDialog() {
 
 
+        Intent i = new Intent(this,nameSettingsActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putString("Player1",p1);
+        bundle.putString("Player2",p2);
+
+        i.putExtras(bundle);
+
+            startActivityForResult(i, Player);
+/*
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
         View promptView = layoutInflater.inflate(R.layout.name_diolog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -250,7 +266,7 @@ reset the board
                         });
 
         AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
+        alert.show();*/
     }
 
     public void changeturnview(){

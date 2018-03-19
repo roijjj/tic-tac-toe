@@ -5,23 +5,29 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp">
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Enter Name"
-        android:id="@+id/textView" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <EditText
         android:id="@+id/editp1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/player_1"
-        android:padding="10dp" />
+        android:padding="10dp"/>
+
     <EditText
         android:id="@+id/editp2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/player_2"
-        android:padding="10dp" />
+        android:padding="10dp"/>
+    <Button
+        android:id="@+id/button_ok"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>
