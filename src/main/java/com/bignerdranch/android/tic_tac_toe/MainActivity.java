@@ -1,29 +1,26 @@
 package com.bignerdranch.android.tic_tac_toe;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    //the buttions of the board
+    //the buttons of the board
     private Button[][] mButtons = new Button[3][3];
 
-   //thie textview tells you whos turnit s
+   //the textview tells you whos turn it is
     TextView  playerturn;
 
-//public final static String Player="tic.tac.toe";
     final int Player = 1;
+
     boolean p1turn = true;
 
     //the player
@@ -51,10 +48,15 @@ switch (item.getItemId()){
         reset();//reset the board
         return true;
     case R.id.name_change:
-        //Intent i = new Intent(this,nameSettingsActivity.class);
-//startActivity(i);
+        Intent i = new Intent(this,name_change.class);
+        Bundle bundle = new Bundle();
+//putting the players names into a bundle
+        bundle.putString("Player1",p1);
+        bundle.putString("Player2",p2);
+//puts the bundle into the intent
+        i.putExtras(bundle);
 
-        showInputDialog();//change the name of the players
+        startActivityForResult(i, Player);
 
         return true;
 default:
@@ -90,7 +92,7 @@ default:
     public void onClick(View v ){
 
 
-        //check if the user has pressed the button
+        //check if the user has already pressed the button
         if (!((Button)v ).getText().toString().equals("")){
             return;
         }
@@ -220,55 +222,19 @@ reset the board
     }
 
 
-    protected void showInputDialog() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bundle bundle = data.getExtras();
+        p1 = bundle.getString("Player1");
+        playerturn.setText(p1+"'s turn");
 
-
-        Intent i = new Intent(this,nameSettingsActivity.class);
-        Bundle bundle = new Bundle();
-
-        bundle.putString("Player1",p1);
-        bundle.putString("Player2",p2);
-
-        i.putExtras(bundle);
-
-            startActivityForResult(i, Player);
-/*
-        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        View promptView = layoutInflater.inflate(R.layout.name_diolog, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setView(promptView);
-
-        final EditText editText1 = (EditText) promptView.findViewById(R.id.editp1);
-        final EditText editText2 = (EditText) promptView.findViewById(R.id.editp2);
-
-
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (!editText1.getText().toString().equals("")){
-                            p1= editText1.getText().toString();
-
-                        }
-                        if (!editText2.getText().toString().equals("")){
-
-                            p2 = editText2.getText().toString();
-
-                        }
-                        changeturnview();
-                    }
-
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();*/
+        p2 = bundle.getString("Player2");
+        //changeturnview();
     }
-
+/*
+* checks who turn it is
+* */
     public void changeturnview(){
         if(p1turn){
 
